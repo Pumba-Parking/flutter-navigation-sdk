@@ -184,9 +184,10 @@ class GoogleMapsAutoViewController {
   }
 
   /// Add markers to the map view.
-  Future<List<Marker?>> addMarkers(List<MarkerOptions> markerOptions) {
+  Future<List<Marker?>> addMarkers(
+      List<MarkerOptions> markerOptions, String markerId) {
     return GoogleMapsNavigationPlatform.instance.autoAPI
-        .addMarkers(markerOptions: markerOptions);
+        .addMarkers(markerOptions: markerOptions, markerId: markerId);
   }
 
   /// Update markers to the map view.

@@ -20,8 +20,8 @@ int? colorToInt(Color? color) {
 
   int floatToInt8(double x) => (x * 255.0).round() & 0xff;
 
-  return (floatToInt8(color.a) << 24) |
-      (floatToInt8(color.r) << 16) |
-      (floatToInt8(color.g) << 8) |
-      (floatToInt8(color.b));
+  return (floatToInt8(color.alpha.toDouble()) << 24) |
+      (floatToInt8(color.red.toDouble()) << 16) |
+      (floatToInt8(color.green.toDouble()) << 8) |
+      (floatToInt8(color.blue.toDouble()));
 }

@@ -70,7 +70,7 @@ void main() {
 
     // Add marker and save response to [addedMarkersList].
     final List<Marker?> addedMarkersList =
-        await viewController.addMarkers(<MarkerOptions>[markerOneOptions]);
+        await viewController.addMarkers(<MarkerOptions>[markerOneOptions], '1');
     expect(addedMarkersList.length, 1);
     final Marker? addedMarker = addedMarkersList.first;
 
@@ -186,7 +186,7 @@ void main() {
         await viewController.addMarkers(<MarkerOptions>[
       markerThreeOptions,
       markerOneOptions,
-    ]);
+    ], '1');
 
     final List<Marker?> getRemoveMarkerList = await viewController.getMarkers();
 
@@ -231,7 +231,7 @@ void main() {
 
     // Add two markers.
     List<Marker?> clearMarkerList = await viewController
-        .addMarkers(<MarkerOptions>[markerOneOptions, markerTwoOptions]);
+        .addMarkers(<MarkerOptions>[markerOneOptions, markerTwoOptions], '1');
     List<Marker?> getClearMarkerList = await viewController.getMarkers();
 
     expect(clearMarkerList.length, 2);
@@ -257,7 +257,7 @@ void main() {
 
     /// Test clear() function clears also markers.
     clearMarkerList = await viewController
-        .addMarkers(<MarkerOptions>[markerOneOptions, markerTwoOptions]);
+        .addMarkers(<MarkerOptions>[markerOneOptions, markerTwoOptions], '1');
     getClearMarkerList = await viewController.getMarkers();
     expect(clearMarkerList.length, 2);
     expect(getClearMarkerList.length, 2);

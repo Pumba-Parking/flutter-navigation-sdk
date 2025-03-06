@@ -623,8 +623,11 @@ class MapViewAPIImpl {
   }
 
   /// Add markers to map view.
-  Future<List<Marker>> addMarkers(
-      {required int viewId, required List<MarkerOptions> markerOptions}) async {
+  Future<List<Marker>> addMarkers({
+    required int viewId,
+    required List<MarkerOptions> markerOptions,
+    required String markerId,
+  }) async {
     // Convert options to pigeon format
     final List<MarkerOptionsDto> options =
         markerOptions.map((MarkerOptions opt) => opt.toDto()).toList();

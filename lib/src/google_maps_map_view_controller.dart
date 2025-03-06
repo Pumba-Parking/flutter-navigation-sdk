@@ -226,9 +226,10 @@ class GoogleMapViewController {
   }
 
   /// Add markers to the map view.
-  Future<List<Marker?>> addMarkers(List<MarkerOptions> markerOptions) {
-    return GoogleMapsNavigationPlatform.instance.viewAPI
-        .addMarkers(viewId: _viewId, markerOptions: markerOptions);
+  Future<List<Marker?>> addMarkers(
+      List<MarkerOptions> markerOptions, String markerId) {
+    return GoogleMapsNavigationPlatform.instance.viewAPI.addMarkers(
+        viewId: _viewId, markerOptions: markerOptions, markerId: markerId);
   }
 
   /// Update markers to the map view.

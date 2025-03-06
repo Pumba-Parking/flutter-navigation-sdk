@@ -58,18 +58,20 @@ class Marker {
 @immutable
 class MarkerOptions {
   /// Initialize MarkerOptions object.
-  const MarkerOptions(
-      {this.alpha = 1.0,
-      this.anchor = const MarkerAnchor(u: 0.5, v: 1.0),
-      this.draggable = false,
-      this.flat = false,
-      this.icon = ImageDescriptor.defaultImage,
-      this.consumeTapEvents = false,
-      this.position = const LatLng(latitude: 0.0, longitude: 0.0),
-      this.rotation = 0.0,
-      this.infoWindow = InfoWindow.noInfo,
-      this.visible = true,
-      this.zIndex = 0.0});
+  const MarkerOptions({
+    this.alpha = 1.0,
+    this.anchor = const MarkerAnchor(u: 0.5, v: 1.0),
+    this.draggable = false,
+    this.flat = false,
+    this.icon = ImageDescriptor.defaultImage,
+    this.consumeTapEvents = false,
+    this.position = const LatLng(latitude: 0.0, longitude: 0.0),
+    this.rotation = 0.0,
+    this.infoWindow = InfoWindow.noInfo,
+    this.visible = true,
+    this.zIndex = 0.0,
+    this.onTap,
+  });
 
   /// Sets the alpha (opacity) of the marker.
   ///
@@ -80,6 +82,8 @@ class MarkerOptions {
   ///
   /// By default, the marker image is placed on bottom center; [anchor] is `MarkerAnchor(0.5, 1.0)`.
   final MarkerAnchor anchor;
+
+  final Function? onTap;
 
   /// Allow dragging the marker.
   ///
@@ -130,33 +134,37 @@ class MarkerOptions {
   final double zIndex;
 
   /// Create copy of [MarkerOptions] with specified parameters
-  MarkerOptions copyWith(
-      {double? alpha,
-      MarkerAnchor? anchor,
-      bool? draggable,
-      bool? flat,
-      ImageDescriptor? icon,
-      bool? consumeTapEvents,
-      MarkerAnchor? infoWindowAnchor,
-      LatLng? position,
-      double? rotation,
-      String? snippet,
-      String? title,
-      InfoWindow? infoWindow,
-      bool? visible,
-      double? zIndex}) {
+  MarkerOptions copyWith({
+    double? alpha,
+    MarkerAnchor? anchor,
+    bool? draggable,
+    bool? flat,
+    ImageDescriptor? icon,
+    bool? consumeTapEvents,
+    MarkerAnchor? infoWindowAnchor,
+    LatLng? position,
+    double? rotation,
+    String? snippet,
+    String? title,
+    InfoWindow? infoWindow,
+    bool? visible,
+    double? zIndex,
+    Function? onTap,
+  }) {
     return MarkerOptions(
-        alpha: alpha ?? this.alpha,
-        anchor: anchor ?? this.anchor,
-        draggable: draggable ?? this.draggable,
-        flat: flat ?? this.flat,
-        icon: icon ?? this.icon,
-        consumeTapEvents: consumeTapEvents ?? this.consumeTapEvents,
-        position: position ?? this.position,
-        rotation: rotation ?? this.rotation,
-        infoWindow: infoWindow ?? this.infoWindow,
-        visible: visible ?? this.visible,
-        zIndex: zIndex ?? this.zIndex);
+      alpha: alpha ?? this.alpha,
+      anchor: anchor ?? this.anchor,
+      draggable: draggable ?? this.draggable,
+      flat: flat ?? this.flat,
+      icon: icon ?? this.icon,
+      consumeTapEvents: consumeTapEvents ?? this.consumeTapEvents,
+      position: position ?? this.position,
+      rotation: rotation ?? this.rotation,
+      infoWindow: infoWindow ?? this.infoWindow,
+      visible: visible ?? this.visible,
+      zIndex: zIndex ?? this.zIndex,
+      onTap: onTap ?? this.onTap,
+    );
   }
 
   @override
@@ -178,7 +186,8 @@ class MarkerOptions {
         rotation == other.rotation &&
         infoWindow == other.infoWindow &&
         visible == other.visible &&
-        zIndex == other.zIndex;
+        zIndex == other.zIndex &&
+        onTap == other.onTap;
   }
 
   @override

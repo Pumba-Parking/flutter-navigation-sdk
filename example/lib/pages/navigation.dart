@@ -239,7 +239,7 @@ class _NavigationPageState extends ExamplePageState<NavigationPage> {
         snippet: 'autoMarkerOne',
       ),
     );
-    await _autoViewController.addMarkers([markerOptions]);
+    await _autoViewController.addMarkers([markerOptions], '1');
   }
 
   /// iOS emulator does not update location and does not fire roadsnapping
@@ -593,7 +593,7 @@ class _NavigationPageState extends ExamplePageState<NavigationPage> {
     if (_newWaypointMarker == null) {
       // Add new marker.
       final List<Marker?> addedMarkers = await _navigationViewController!
-          .addMarkers(<MarkerOptions>[markerOptions]);
+          .addMarkers(<MarkerOptions>[markerOptions], '1');
       if (addedMarkers.first != null) {
         _newWaypointMarker = addedMarkers.first;
       } else {

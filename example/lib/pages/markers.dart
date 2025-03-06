@@ -56,8 +56,8 @@ class _MarkersPageState extends ExamplePageState<MarkersPage> {
         position: position.target,
         infoWindow: const InfoWindow(title: 'Name', snippet: 'Snippet here'));
 
-    final List<Marker?> addedMarkers =
-        await _navigationViewController.addMarkers(<MarkerOptions>[options]);
+    final List<Marker?> addedMarkers = await _navigationViewController
+        .addMarkers(<MarkerOptions>[options], '1');
     if (addedMarkers.isNotEmpty) {
       final Marker marker = addedMarkers.first!;
       setState(() {

@@ -1044,9 +1044,12 @@ void main() {
               .thenAnswer((Invocation _) => <MarkerDto>[markerIn]);
 
           // Add marker
-          final List<Marker?> markersOut = await GoogleMapsNavigationPlatform
-              .instance.viewAPI
-              .addMarkers(viewId: 0, markerOptions: <MarkerOptions>[optionsIn]);
+          final List<Marker?> markersOut =
+              await GoogleMapsNavigationPlatform.instance.viewAPI.addMarkers(
+            viewId: 0,
+            markerOptions: <MarkerOptions>[optionsIn],
+            markerId: '1',
+          );
 
           // Verify correct message sent from view api
           final VerificationResult result =
