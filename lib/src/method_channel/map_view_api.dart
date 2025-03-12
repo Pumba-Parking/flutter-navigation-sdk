@@ -635,7 +635,7 @@ class MapViewAPIImpl {
     // Create marker objects with new ID's
     final List<MarkerDto> markersToAdd = options
         .map((MarkerOptionsDto options) =>
-            MarkerDto(markerId: _createMarkerId(), options: options))
+            MarkerDto(markerId: markerId, options: options))
         .toList();
 
     // Add markers to map
