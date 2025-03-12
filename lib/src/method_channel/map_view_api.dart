@@ -31,12 +31,12 @@ class MapViewAPIImpl {
       StreamController<_ViewIdEventWrapper>.broadcast();
 
   /// Keep track of marker count, used to generate marker ID's.
-  int _markerCounter = 0;
-  String _createMarkerId() {
-    final String markerId = 'Marker_$_markerCounter';
-    _markerCounter += 1;
-    return markerId;
-  }
+  final int _markerCounter = 0;
+  // String _createMarkerId() {
+  //   final String markerId = 'Marker_$_markerCounter';
+  //   _markerCounter += 1;
+  //   return markerId;
+  // }
 
   /// Keep track of polygon count, used to generate polygon ID's.
   int _polygonCounter = 0;
