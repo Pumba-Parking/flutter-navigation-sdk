@@ -20,7 +20,6 @@
 // For more information about Flutter integration tests, please see
 // https://docs.flutter.dev/cookbook/testing/integration/introduction
 
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -28,7 +27,15 @@ import 'package:flutter/material.dart';
 import 'shared.dart';
 
 void main() {
-  patrol('C01 - Test session initialization errors',
+  // Patrol runs the tests in alphabetical order, add a prefix to the test
+  // name to control the order with script:
+  int testCounter = 0;
+  String prefix(String name) {
+    testCounter++;
+    return 'IT${testCounter.toString().padLeft(2, '0')} $name';
+  }
+
+  patrol(prefix('Test session initialization errors'),
       (PatrolIntegrationTester $) async {
     await GoogleMapsNavigator.resetTermsAccepted();
     expect(await GoogleMapsNavigator.areTermsAccepted(), false);
@@ -174,9 +181,9 @@ void main() {
     }
   });
 
-  patrol('C02 - Test Maps initialization', (PatrolIntegrationTester $) async {
-    final Completer<GoogleNavigationViewController> viewControllerCompleter =
-        Completer<GoogleNavigationViewController>();
+  patrol(prefix('Test Maps initialization'), (PatrolIntegrationTester $) async {
+    final ControllerCompleter<GoogleNavigationViewController>
+        viewControllerCompleter = ControllerCompleter();
 
     await checkTermsAndConditionsAcceptance($);
     await checkLocationDialogAcceptance($);
@@ -212,7 +219,6 @@ void main() {
       GoogleMapsNavigationView(
         key: key,
         onViewCreated: (GoogleNavigationViewController controller) {
-          controller.setMyLocationEnabled(true);
           viewControllerCompleter.complete(controller);
         },
         initialCameraPosition: cameraPosition,
@@ -235,6 +241,9 @@ void main() {
 
     final GoogleNavigationViewController controller =
         await viewControllerCompleter.future;
+
+    await controller.setMyLocationEnabled(true);
+
     final CameraPosition cameraOut = await controller.getCameraPosition();
 
     expect(cameraOut.target.latitude,
@@ -266,10 +275,10 @@ void main() {
     expect(await controller.isNavigationUIEnabled(), true);
   });
 
-  patrol('C03 - Test Maps initialization without navigation',
+  patrol(prefix('Test Maps initialization without navigation'),
       (PatrolIntegrationTester $) async {
-    final Completer<GoogleMapViewController> viewControllerCompleter =
-        Completer<GoogleMapViewController>();
+    final ControllerCompleter<GoogleMapViewController> viewControllerCompleter =
+        ControllerCompleter<GoogleMapViewController>();
 
     const CameraPosition cameraPosition =
         CameraPosition(target: LatLng(latitude: 65, longitude: 25.5), zoom: 12);
@@ -292,7 +301,6 @@ void main() {
       GoogleMapsMapView(
         key: key,
         onViewCreated: (GoogleMapViewController controller) {
-          controller.setMyLocationEnabled(true);
           viewControllerCompleter.complete(controller);
         },
         initialCameraPosition: cameraPosition,
@@ -313,6 +321,9 @@ void main() {
 
     final GoogleMapViewController controller =
         await viewControllerCompleter.future;
+
+    await controller.setMyLocationEnabled(true);
+
     final CameraPosition cameraOut = await controller.getCameraPosition();
 
     expect(cameraOut.target.latitude,
