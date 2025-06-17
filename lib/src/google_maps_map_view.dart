@@ -283,7 +283,35 @@ class GoogleMapsMapView extends GoogleMapsBaseMapView {
       super.onCameraStartedFollowingLocation,
       super.onCameraStoppedFollowingLocation});
 
-  /// On view created callback.
+  /// Callback triggered when the map view is created.
+  ///
+  /// Provides a [OnMapViewCreatedCallback] for interacting with and
+  /// controlling the map after initialization.
+  ///
+  /// To ensure safe usage, wrap controller calls inside a `try-catch` block
+  /// as native method calls are asynchronous. This prevents exceptions if the
+  /// view is unmounted before the native message is handled on the platform
+  /// side.
+  ///
+  /// Example:
+  /// ```dart
+  /// onViewCreated: (controller) async {
+  ///   try {
+  ///     final CameraUpdate cameraUpdate = CameraUpdate.newLatLng(
+  ///       const LatLng(latitude: 12.3456, longitude: 12.3456),
+  ///     );
+  ///     await controller.setCameraPosition(CameraPosition(
+  ///       target: LatLng(37.7749, -122.4194),
+  ///       zoom: 12,
+  ///     ));
+  ///   } on PlatformException catch (exception, stack) {
+  ///     if (exception.code == 'viewNotFound') {
+  ///       // Handle the case when the view is disposed before the call is
+  ///       // handled on the platform side.
+  ///     }
+  ///   }
+  /// },
+  /// ```
   final OnMapViewCreatedCallback onViewCreated;
 
   /// Creates a [State] for this [GoogleMapsMapView].
@@ -336,31 +364,31 @@ abstract class MapViewState<T extends GoogleMapsBaseMapView> extends State<T> {
         case MarkerDragEventType.dragStart:
           widget.onMarkerDragStart?.call(event.markerId, event.position);
       }
+    });
 
-      GoogleMapsNavigationPlatform.instance.viewAPI
-          .getPolygonClickedEventStream(viewId: viewId)
-          .listen((PolygonClickedEvent event) {
-        widget.onPolygonClicked?.call(event.polygonId);
-      });
+    GoogleMapsNavigationPlatform.instance.viewAPI
+        .getPolygonClickedEventStream(viewId: viewId)
+        .listen((PolygonClickedEvent event) {
+      widget.onPolygonClicked?.call(event.polygonId);
+    });
 
-      GoogleMapsNavigationPlatform.instance.viewAPI
-          .getPolylineClickedEventStream(viewId: viewId)
-          .listen((PolylineClickedEvent event) {
-        widget.onPolylineClicked?.call(event.polylineId);
-      });
+    GoogleMapsNavigationPlatform.instance.viewAPI
+        .getPolylineClickedEventStream(viewId: viewId)
+        .listen((PolylineClickedEvent event) {
+      widget.onPolylineClicked?.call(event.polylineId);
+    });
 
-      GoogleMapsNavigationPlatform.instance.viewAPI
-          .getCircleClickedEventStream(viewId: viewId)
-          .listen((CircleClickedEvent event) {
-        widget.onCircleClicked?.call(event.circleId);
-      });
+    GoogleMapsNavigationPlatform.instance.viewAPI
+        .getCircleClickedEventStream(viewId: viewId)
+        .listen((CircleClickedEvent event) {
+      widget.onCircleClicked?.call(event.circleId);
     });
 
     if (widget.onCameraMoveStarted != null ||
         widget.onCameraMove != null ||
         widget.onCameraIdle != null) {
       GoogleMapsNavigationPlatform.instance.viewAPI
-          .registerOnCameraChangedListener(viewId: viewId);
+          .enableOnCameraChangedEvents(viewId: viewId);
     }
     GoogleMapsNavigationPlatform.instance.viewAPI
         .getCameraChangedEventStream(viewId: viewId)
@@ -412,13 +440,17 @@ class GoogleMapsMapViewState extends MapViewState<GoogleMapsMapView> {
             padding: widget.initialPadding,
           ),
         ),
-        onMapReady: _onPlatformViewCreated);
+        onPlatformViewCreated: _onPlatformViewCreated,
+        onMapReady: _onMapReady);
   }
 
-  /// Callback method when platform view is created.
+  /// Callback method for platform view is created event.
   void _onPlatformViewCreated(int viewId) {
     initMapViewListeners(viewId);
+  }
 
+  /// Callback method for map ready event.
+  void _onMapReady(int viewId) {
     final GoogleMapViewController viewController =
         GoogleMapViewController(viewId);
     widget.onViewCreated(viewController);

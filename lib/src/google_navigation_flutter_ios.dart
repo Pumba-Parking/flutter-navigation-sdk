@@ -50,26 +50,31 @@ class GoogleMapsNavigationIOS extends GoogleMapsNavigationPlatform {
   @override
   Widget buildMapView(
       {required MapViewInitializationOptions initializationOptions,
+      required PlatformViewCreatedCallback onPlatformViewCreated,
       required MapReadyCallback onMapReady}) {
     return _buildView(
         mapViewType: MapViewType.map,
         initializationOptions: initializationOptions,
+        onPlatformViewCreated: onPlatformViewCreated,
         onMapReady: onMapReady);
   }
 
   @override
   Widget buildNavigationView(
       {required MapViewInitializationOptions initializationOptions,
+      required PlatformViewCreatedCallback onPlatformViewCreated,
       required MapReadyCallback onMapReady}) {
     return _buildView(
         mapViewType: MapViewType.navigation,
         initializationOptions: initializationOptions,
+        onPlatformViewCreated: onPlatformViewCreated,
         onMapReady: onMapReady);
   }
 
   Widget _buildView(
       {required MapViewType mapViewType,
       required MapViewInitializationOptions initializationOptions,
+      required PlatformViewCreatedCallback onPlatformViewCreated,
       required MapReadyCallback onMapReady}) {
     // Initialize method channel for view communication if needed.
     viewAPI.ensureViewAPISetUp();
@@ -89,9 +94,28 @@ class GoogleMapsNavigationIOS extends GoogleMapsNavigationPlatform {
       creationParams: creationParams.encode(),
       creationParamsCodec: const StandardMessageCodec(),
       onPlatformViewCreated: (int viewId) async {
-        // Wait map to be ready before calling [onMapReady] callback
-        await viewAPI.awaitMapReady(viewId: viewId);
-        onMapReady(viewId);
+        try {
+          onPlatformViewCreated(viewId);
+
+          // Wait map to be ready before calling [onMapReady] callback
+          await viewAPI.awaitMapReady(viewId: viewId);
+          onMapReady(viewId);
+        } on PlatformException catch (exception, stack) {
+          if (exception.code == 'viewNotFound') {
+            // This exeption can happen if the view is disposed before the calls
+            // are made to the platform side. We can ignore this exception as
+            // the view is already disposed.
+            return;
+          } else {
+            // Pass other exceptions to the Flutter error handler.
+            FlutterError.reportError(FlutterErrorDetails(
+              exception: exception,
+              stack: stack,
+              library: 'google_navigation_flutter',
+              context: ErrorDescription(exception.message ?? ''),
+            ));
+          }
+        }
       },
       gestureRecognizers: initializationOptions.gestureRecognizers,
       layoutDirection: initializationOptions.layoutDirection,
