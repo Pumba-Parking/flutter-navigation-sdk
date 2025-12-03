@@ -360,6 +360,16 @@ class GoogleMapsNavigationViewMessageHandler: MapViewApi {
     try getView(viewId).setNavigationFooterEnabled(enabled)
   }
 
+  func setNavigationHeaderBackgroundColor(viewId: Int64, color: Int64) throws {
+    let view = try getView(viewId)
+    view.setNavigationHeaderBackgroundColor(color)
+  }
+
+  func setNavigationFooterBackgroundColor(viewId: Int64, color: Int64) throws {
+    let view = try getView(viewId)
+    view.setNavigationFooterBackgroundColor(color)
+  }
+
   func setRecenterButtonEnabled(viewId: Int64, enabled: Bool) throws {
     try getView(viewId).setRecenterButtonEnabled(enabled)
   }

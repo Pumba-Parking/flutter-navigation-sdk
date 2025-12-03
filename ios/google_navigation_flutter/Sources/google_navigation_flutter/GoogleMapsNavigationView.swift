@@ -498,6 +498,26 @@ public class GoogleMapsNavigationView: NSObject, FlutterPlatformView, ViewSettle
     _mapView.settings.isNavigationFooterEnabled = enabled
   }
 
+  func setNavigationHeaderBackgroundColor(_ color: Int64) {
+    let uiColor = colorFromInt64(color)
+    _mapView.settings.navigationHeaderPrimaryBackgroundColor = uiColor
+    _mapView.settings.navigationHeaderSecondaryBackgroundColor = uiColor
+  }
+
+  func setNavigationFooterBackgroundColor(_ color: Int64) {
+    let uiColor = colorFromInt64(color)
+    _mapView.settings.navigationFooterPrimaryBackgroundColor = uiColor
+    _mapView.settings.navigationFooterSecondaryBackgroundColor = uiColor
+  }
+
+  private func colorFromInt64(_ color: Int64) -> UIColor {
+    let alpha = CGFloat((color >> 24) & 0xFF) / 255.0
+    let red = CGFloat((color >> 16) & 0xFF) / 255.0
+    let green = CGFloat((color >> 8) & 0xFF) / 255.0
+    let blue = CGFloat(color & 0xFF) / 255.0
+    return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+  }
+
   func isRecenterButtonEnabled() -> Bool {
     _mapView.settings.isRecenterButtonEnabled
   }

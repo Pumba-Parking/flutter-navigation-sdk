@@ -20,6 +20,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../google_navigation_flutter.dart';
 import '../google_navigation_flutter_platform_interface.dart';
+import '../utils/color.dart';
 import 'method_channel.dart';
 
 /// @nodoc
@@ -492,6 +493,13 @@ class MapViewAPIImpl {
     return _viewApi.setNavigationHeaderEnabled(viewId, enabled);
   }
 
+  /// Set navigation header background color.
+  Future<void> setNavigationHeaderBackgroundColor(
+      {required int viewId, required Color color}) {
+    return _viewApi.setNavigationHeaderBackgroundColor(
+        viewId, colorToInt(color) ?? 0);
+  }
+
   /// Is the navigation footer enabled.
   Future<bool> isNavigationFooterEnabled({required int viewId}) {
     return _viewApi.isNavigationFooterEnabled(viewId);
@@ -501,6 +509,13 @@ class MapViewAPIImpl {
   Future<void> setNavigationFooterEnabled(
       {required int viewId, required bool enabled}) {
     return _viewApi.setNavigationFooterEnabled(viewId, enabled);
+  }
+
+  /// Set navigation footer (ETA card) background color.
+  Future<void> setNavigationFooterBackgroundColor(
+      {required int viewId, required Color color}) {
+    return _viewApi.setNavigationFooterBackgroundColor(
+        viewId, colorToInt(color) ?? 0);
   }
 
   /// Is the recenter button enabled.

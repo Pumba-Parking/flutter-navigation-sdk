@@ -241,4 +241,26 @@ internal constructor(
   fun showRouteOverview() {
     _navigationView.showRouteOverview()
   }
+
+  fun setNavigationHeaderBackgroundColor(color: Int) {
+    // Ensure color has full alpha (0xFF in the high byte)
+    val opaqueColor = color or 0xFF000000.toInt()
+    val stylingOptions = com.google.android.libraries.navigation.StylingOptions()
+    stylingOptions.primaryDayModeThemeColor(opaqueColor)
+    stylingOptions.secondaryDayModeThemeColor(opaqueColor)
+    stylingOptions.primaryNightModeThemeColor(opaqueColor)
+    stylingOptions.secondaryNightModeThemeColor(opaqueColor)
+    _navigationView.setStylingOptions(stylingOptions)
+  }
+
+  fun setNavigationFooterBackgroundColor(color: Int) {
+    // Footer uses the same StylingOptions - the primary color affects both header and footer
+    val opaqueColor = color or 0xFF000000.toInt()
+    val stylingOptions = com.google.android.libraries.navigation.StylingOptions()
+    stylingOptions.primaryDayModeThemeColor(opaqueColor)
+    stylingOptions.secondaryDayModeThemeColor(opaqueColor)
+    stylingOptions.primaryNightModeThemeColor(opaqueColor)
+    stylingOptions.secondaryNightModeThemeColor(opaqueColor)
+    _navigationView.setStylingOptions(stylingOptions)
+  }
 }

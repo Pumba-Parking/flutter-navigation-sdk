@@ -328,6 +328,14 @@ class GoogleMapsViewMessageHandler(private val viewRegistry: GoogleMapsViewRegis
     getNavigationView(viewId.toInt()).setNavigationFooterEnabled(enabled)
   }
 
+  override fun setNavigationHeaderBackgroundColor(viewId: Long, color: Long) {
+    getNavigationView(viewId.toInt()).setNavigationHeaderBackgroundColor(color.toInt())
+  }
+
+  override fun setNavigationFooterBackgroundColor(viewId: Long, color: Long) {
+    getNavigationView(viewId.toInt()).setNavigationFooterBackgroundColor(color.toInt())
+  }
+
   override fun isRecenterButtonEnabled(viewId: Long): Boolean {
     return getNavigationView(viewId.toInt()).isRecenterButtonEnabled()
   }

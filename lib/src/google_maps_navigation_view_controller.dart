@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:ui' show Color;
+
 import '../google_navigation_flutter.dart';
 import 'google_navigation_flutter_platform_interface.dart';
 
@@ -192,6 +194,41 @@ class GoogleNavigationViewController extends GoogleMapViewController {
   Future<void> showRouteOverview() {
     return GoogleMapsNavigationPlatform.instance.viewAPI.showRouteOverview(
       viewId: getViewId(),
+    );
+  }
+
+  /// Set the navigation header background color.
+  ///
+  /// On Android, this uses `StylingOptions.primaryDayModeThemeColor` and
+  /// `primaryNightModeThemeColor` which affects the overall navigation UI theme.
+  ///
+  /// On iOS, this sets both primary and secondary background colors of the
+  /// navigation header.
+  ///
+  /// The [color] parameter should be a Flutter [Color] object.
+  Future<void> setNavigationHeaderBackgroundColor(Color color) {
+    return GoogleMapsNavigationPlatform.instance.viewAPI
+        .setNavigationHeaderBackgroundColor(
+      viewId: getViewId(),
+      color: color,
+    );
+  }
+
+  /// Set the navigation footer (ETA card) background color.
+  ///
+  /// **Note:** On Android, the footer/ETA card background color cannot be
+  /// customized programmatically - this is a limitation of the Android
+  /// Navigation SDK. Only [setNavigationHeaderBackgroundColor] works on Android.
+  ///
+  /// On iOS, this sets both primary and secondary background colors of the
+  /// navigation footer.
+  ///
+  /// The [color] parameter should be a Flutter [Color] object.
+  Future<void> setNavigationFooterBackgroundColor(Color color) {
+    return GoogleMapsNavigationPlatform.instance.viewAPI
+        .setNavigationFooterBackgroundColor(
+      viewId: getViewId(),
+      color: color,
     );
   }
 }

@@ -18,10 +18,11 @@ int? colorToInt(Color? color) {
     return null;
   }
 
+  // Use the new Flutter 3.x API (color.r, color.g, color.b, color.a return 0.0-1.0)
   int floatToInt8(double x) => (x * 255.0).round() & 0xff;
 
-  return (floatToInt8(color.alpha.toDouble()) << 24) |
-      (floatToInt8(color.red.toDouble()) << 16) |
-      (floatToInt8(color.green.toDouble()) << 8) |
-      (floatToInt8(color.blue.toDouble()));
+  return (floatToInt8(color.a) << 24) |
+      (floatToInt8(color.r) << 16) |
+      (floatToInt8(color.g) << 8) |
+      (floatToInt8(color.b));
 }

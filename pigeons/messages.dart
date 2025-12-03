@@ -417,6 +417,9 @@ abstract class MapViewApi {
   bool isNavigationFooterEnabled(int viewId);
   void setNavigationFooterEnabled(int viewId, bool enabled);
 
+  void setNavigationHeaderBackgroundColor(int viewId, int color);
+  void setNavigationFooterBackgroundColor(int viewId, int color);
+
   bool isRecenterButtonEnabled(int viewId);
   void setRecenterButtonEnabled(int viewId, bool enabled);
 
